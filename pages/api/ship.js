@@ -1,4 +1,4 @@
-import { createCanvas, loadImage } from 'canvas';
+import { createCanvas, loadImage } from '@napi-rs/canvas';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -12,16 +12,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    const canvas = createCanvas(800, 400);
+    const width = 800;
+    const height = 400;
+    const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
     // Arka plan
     if (background) {
       const bg = await loadImage(background);
-      ctx.drawImage(bg, 0, 0, 800, 400);
+      ctx.drawImage(bg, 0, 0, width, height);
     } else {
       ctx.fillStyle = '#2c2f33';
-      ctx.fillRect(0, 0, 800, 400);
+      ctx.fillRect(0, 0, width, height);
     }
 
     // Avatar 1
@@ -44,20 +46,19 @@ export default async function handler(req, res) {
 
     // Level
     if (level) {
-      ctx.font = 'bold 36px Arial';
+      ctx.font = 'bold 36px sans-serif';
       ctx.fillStyle = '#fff';
       ctx.fillText(`Level: ${level}`, 325, 350);
     }
 
     // PNG → Base64 JSON
-    const buffer = canvas.toBuffer('image/png');
+    const buffer = await canvas.encode('png');
     const base64Image = buffer.toString('base64');
 
     res.status(200).json({
       success: true,
       image: `data:image/png;base64,${base64Image}`
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
