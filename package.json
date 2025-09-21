@@ -1,16 +1,21 @@
 {
-  "name": "ship-card-api",
+  "name": "welcome-card-api",
   "version": "1.0.0",
-  "private": true,
+  "description": "Vercel API for Discord Welcome Cards",
+  "main": "index.js",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
-    "@napi-rs/canvas": "^0.1.37",
+    "@napi-rs/canvas": "^0.6.2",
     "next": "13.5.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "node-fetch": "^2.6.7"
   }
 }
